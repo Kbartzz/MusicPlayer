@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="light">Deezer API Player</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding deezer-page">
+  <ion-searchbar
+    [(ngModel)]="query"
+    (ionInput)="searchDeezer()"
+    placeholder="Search Deezer..."
+    debounce="300"
+    animated="true"
+    color="light"
+  ></ion-searchbar>
+
+  <!-- Spinner while searching -->
+  <div class="text-center" *ngIf="query && results.length === 0">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- No results message -->
+  <p *ngIf="query && results.length === 0" class="ion-text-center no-results-text">
+    No results found.
+  </p>
+
+  <!-- Search results list -->
+  <ion-list *ngIf="results.length > 0" class="results-list">
+    <ion-item
+      *ngFor="let track of results"
+      (click)="playPreview(track)"
+      button
+      lines="none"
+      class="track-item"
+    >
+      <ion-thumbnail slot="start" class="thumb-rounded">
+        <img [src]="track.album.cover_medium || 'assets/default-cover.jpg'" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2 class="track-title">{{ track.title }}</h2>
+        <p class="track-artist">{{ track.artist.name }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

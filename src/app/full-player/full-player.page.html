@@ -1,0 +1,50 @@
+<ion-header translucent>
+  <ion-toolbar class="spotify-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Now Playing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="spotify-player ion-padding">
+  <div class="album-wrapper">
+    <img
+      [src]="albumCover"
+      alt="Album Art"
+      class="album-art"
+    />
+  </div>
+
+  <div class="track-info">
+    <h2>{{ audioService.currentTrack?.title || 'No Track' }}</h2>
+    <p class="track-artist">{{ audioService.currentTrack?.artist || 'Unknown Artist' }}</p>
+  </div>
+
+  <ion-range
+    [min]="0"
+    [max]="audioService.duration"
+    [value]="audioService.currentTime"
+    (ionChange)="seekTo($event)"
+    color="success"
+  >
+    <ion-label slot="start">{{ audioService.formatTime(audioService.currentTime) }}</ion-label>
+    <ion-label slot="end">{{ audioService.formatTime(audioService.duration) }}</ion-label>
+  </ion-range>
+
+  <div class="controls">
+    <ion-button fill="clear" size="large" (click)="audioService.previous()">
+      <ion-icon name="play-skip-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button shape="round" color="success" size="large" (click)="audioService.togglePlayPause()">
+      <ion-icon [name]="audioService.isPlaying ? 'pause' : 'play'"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" size="large" (click)="audioService.next()">
+      <ion-icon name="play-skip-forward-outline"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

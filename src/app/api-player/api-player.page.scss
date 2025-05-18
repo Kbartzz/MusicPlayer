@@ -1,0 +1,52 @@
+.deezer-page {
+  --background: #121212;
+  color: #fff;
+
+  ion-searchbar {
+    --background: #1e1e1e;
+    --color: #fff;
+    border-radius: 10px;
+  }
+
+  .results-list {
+    margin-top: 10px;
+  }
+
+  .track-item {
+    transition: background 0.2s ease;
+    border-radius: 10px;
+    margin: 4px 0;
+    --background: #1a1a1a;
+
+    &:hover {
+      --background: #282828;
+    }
+  }
+
+  .track-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+  }
+
+  .track-artist {
+    font-size: 0.875rem;
+    color: #aaaaaa;
+  }
+
+  .thumb-rounded img {
+    border-radius: 10px;
+  }
+
+  .no-results-text {
+    color: #888;
+    font-style: italic;
+    margin-top: 1rem;
+  }
+
+  .text-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+}

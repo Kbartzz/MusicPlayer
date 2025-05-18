@@ -6,11 +6,15 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { Media } from '@awesome-cordova-plugins/media/ngx';
+import { FileChooser } from '@awesome-cordova-plugins/file-chooser/ngx';
+import { MiniPlayerComponent } from './mini-player/mini-player.component';
+
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,MiniPlayerComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Media, FileChooser],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

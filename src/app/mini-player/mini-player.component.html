@@ -1,0 +1,30 @@
+<ion-card *ngIf="audioService.currentTrack" class="mini-player" (click)="openFullPlayer()">
+  <ion-card-content>
+    <div class="mini-player-info">
+      <strong>{{ audioService.currentTrack.title }}</strong><br />
+      <small class="text-muted">{{ audioService.currentTrack.artist }}</small>
+    </div>
+
+    <ion-range
+      [min]="0"
+      [max]="audioService.duration"
+      [value]="audioService.currentTime"
+      (ionChange)="onSeekChange($event)"
+      color="primary"
+    ></ion-range>
+
+    <div class="controls">
+      <ion-button fill="clear" size="small" (click)="audioService.previous(); $event.stopPropagation()">
+        <ion-icon name="play-skip-back-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" size="small" (click)="audioService.togglePlayPause(); $event.stopPropagation()">
+        <ion-icon [name]="audioService.isPlaying ? 'pause' : 'play'"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" size="small" (click)="audioService.next(); $event.stopPropagation()">
+        <ion-icon name="play-skip-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>
