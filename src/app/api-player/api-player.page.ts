@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AudioService, Track } from '../services/audio.service';
 import { ModalController } from '@ionic/angular';
 import { FullPlayerPage } from '../full-player/full-player.page';
+import { Preferences } from '@capacitor/preferences';
+import { AlertController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-api-player',
@@ -17,7 +20,8 @@ export class ApiPlayerPage {
   constructor(
     private http: HttpClient,
     public audioService: AudioService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+      private alertCtrl: AlertController,
   ) {}
 
   searchDeezer() {
@@ -64,4 +68,54 @@ export class ApiPlayerPage {
     });
     await modal.present();
   }
+async addToPlaylistFromDeezer(track: any) {
+  const stored = await Preferences.get({ key: 'playlists' });
+  const playlists = stored.value ? JSON.parse(stored.value) : [];
+
+  if (!playlists.length) {
+    const alert = await this.alertCtrl.create({
+      header: 'No Playlists',
+      message: 'Please create a playlist first in Local Player.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
+  const alert = await this.alertCtrl.create({
+    header: 'Select Playlist',
+    inputs: playlists.map((p: any, i: number) => ({
+      type: 'radio',
+      label: p.name,
+      value: i,
+      checked: i === 0
+    })),
+    buttons: [
+      { text: 'Cancel', role: 'cancel' },
+      {
+        text: 'Add',
+        handler: async (index: number) => {
+          const newTrack: Track = {
+            title: track.title,
+            artist: track.artist.name,
+            path: track.preview,
+            image: track.album.cover_medium,
+            source: 'deezer'
+          };
+          playlists[index].tracks.push(newTrack);
+          await Preferences.set({ key: 'playlists', value: JSON.stringify(playlists) });
+
+          const toast = document.createElement('ion-toast');
+          toast.message = 'Track added to playlist!';
+          toast.duration = 1500;
+          toast.color = 'success';
+          document.body.appendChild(toast);
+          await toast.present();
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 }

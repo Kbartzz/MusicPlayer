@@ -1,9 +1,9 @@
 <ion-header>
-  <ion-toolbar color="dark">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title color="light">Deezer API Player</ion-title>
+    <ion-title>Deezer API Player</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -27,15 +27,9 @@
     No results found.
   </p>
 
-  <!-- Search results list -->
-  <ion-list *ngIf="results.length > 0" class="results-list">
-    <ion-item
-      *ngFor="let track of results"
-      (click)="playPreview(track)"
-      button
-      lines="none"
-      class="track-item"
-    >
+<ion-list *ngIf="results.length > 0" class="results-list">
+  <ion-item-sliding *ngFor="let track of results">
+    <ion-item button lines="none" class="track-item" (click)="playPreview(track)">
       <ion-thumbnail slot="start" class="thumb-rounded">
         <img [src]="track.album.cover_medium || 'assets/default-cover.jpg'" />
       </ion-thumbnail>
@@ -44,6 +38,13 @@
         <p class="track-artist">{{ track.artist.name }}</p>
       </ion-label>
     </ion-item>
-  </ion-list>
+
+    <ion-item-options side="end">
+      <ion-item-option color="success" (click)="addToPlaylistFromDeezer(track)">
+        Add to Playlist
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
 
 </ion-content>

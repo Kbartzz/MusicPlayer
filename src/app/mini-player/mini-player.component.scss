@@ -13,3 +13,7 @@
   gap: 1rem;
   margin-top: 0.5rem;
 }
+ion-button[color="primary"] ion-icon {
+  font-weight: bold;
+  transform: scale(1.2);
+}

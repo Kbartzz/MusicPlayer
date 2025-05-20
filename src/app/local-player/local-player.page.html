@@ -7,26 +7,27 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  
+<ion-content class="ion-padding local-page">
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search songs..." debounce="300"></ion-searchbar>
 
+  <ion-item>
+    <ion-label>Playlist:</ion-label>
+    <ion-select [(ngModel)]="selectedPlaylistIndex" (ionChange)="switchPlaylist(selectedPlaylistIndex)">
 
-  <ion-searchbar
-    [(ngModel)]="searchTerm"
-    placeholder="Search songs..."
-    debounce="300"
-  ></ion-searchbar>
+      <ion-select-option *ngFor="let pl of playlists; let i = index" [value]="i">
+        {{ pl.name }}
+      </ion-select-option>
+    </ion-select>
+    <ion-button fill="outline" slot="end" (click)="createPlaylist()">+ Playlist</ion-button>
+  </ion-item>
 
-  <ion-list *ngIf="playlist.length > 0">
+  <ion-list *ngIf="currentPlaylist.length > 0">
+
     <ion-list-header>Playlist</ion-list-header>
 
     <ion-item-sliding *ngFor="let song of filteredPlaylist(); let i = index">
-      <ion-item
-        button
-        detail
-        (click)="loadTrack(i)"
-        [color]="audioService.currentTrack?.path === song.path ? 'primary' : ''"
-      >
+      <ion-item button detail (click)="loadTrack(i)"
+        [color]="audioService.currentTrack?.path === song.path ? 'primary' : ''">
         <ion-thumbnail slot="start">
           <img [src]="song.image || 'assets/default-cover.jpg'" />
         </ion-thumbnail>
@@ -36,20 +37,20 @@
           <p>{{ song.artist }}</p>
         </ion-label>
 
-        <ion-icon
-          slot="end"
-          name="musical-notes"
-          *ngIf="audioService.currentTrack?.path === song.path"
-          color="primary"
-        ></ion-icon>
+        <ion-icon slot="end" name="musical-notes" *ngIf="audioService.currentTrack?.path === song.path"
+          color="primary"></ion-icon>
       </ion-item>
 
       <ion-item-options side="end">
         <ion-item-option color="danger" (click)="deleteTrack(i)">
           Delete
         </ion-item-option>
+        <ion-item-option color="primary" (click)="addToAnotherPlaylist(song)">
+          Add to Playlist
+        </ion-item-option>
+
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-    <ion-button expand="block" (click)="pickAudio()">Add song</ion-button>
+  <ion-button expand="block" (click)="pickAudio()">Add song</ion-button>
 </ion-content>

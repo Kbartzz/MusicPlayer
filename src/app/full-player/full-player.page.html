@@ -11,11 +11,7 @@
 
 <ion-content fullscreen class="spotify-player ion-padding">
   <div class="album-wrapper">
-    <img
-      [src]="albumCover"
-      alt="Album Art"
-      class="album-art"
-    />
+    <img [src]="albumCover" alt="Album Art" class="album-art" />
   </div>
 
   <div class="track-info">
@@ -23,28 +19,32 @@
     <p class="track-artist">{{ audioService.currentTrack?.artist || 'Unknown Artist' }}</p>
   </div>
 
-  <ion-range
-    [min]="0"
-    [max]="audioService.duration"
-    [value]="audioService.currentTime"
-    (ionChange)="seekTo($event)"
-    color="success"
-  >
+  <ion-range [min]="0" [max]="audioService.duration" [value]="audioService.currentTime" (ionChange)="seekTo($event)">
     <ion-label slot="start">{{ audioService.formatTime(audioService.currentTime) }}</ion-label>
     <ion-label slot="end">{{ audioService.formatTime(audioService.duration) }}</ion-label>
   </ion-range>
 
   <div class="controls">
-    <ion-button fill="clear" size="large" (click)="audioService.previous()">
+    <ion-button fill="clear" size="small" [color]="audioService.shuffle ? 'primary' : 'medium'"
+      (click)="audioService.toggleShuffle(); $event.stopPropagation()">
+      <ion-icon name="shuffle-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" size="small" (click)="audioService.previous(); $event.stopPropagation()">
       <ion-icon name="play-skip-back-outline"></ion-icon>
     </ion-button>
 
-    <ion-button shape="round" color="success" size="large" (click)="audioService.togglePlayPause()">
+    <ion-button fill="clear" size="small" (click)="audioService.togglePlayPause(); $event.stopPropagation()">
       <ion-icon [name]="audioService.isPlaying ? 'pause' : 'play'"></ion-icon>
     </ion-button>
 
-    <ion-button fill="clear" size="large" (click)="audioService.next()">
+    <ion-button fill="clear" size="small" (click)="audioService.next(); $event.stopPropagation()">
       <ion-icon name="play-skip-forward-outline"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" size="small" [color]="audioService.repeat ? 'primary' : 'medium'"
+      (click)="audioService.toggleRepeat(); $event.stopPropagation()">
+      <ion-icon name="repeat-outline"></ion-icon>
     </ion-button>
   </div>
 </ion-content>
